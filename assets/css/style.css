@@ -520,3 +520,27 @@ tbody tr:hover {
     justify-content: space-between;
   }
 }
+
+/* =========================
+   PAGINACIÓN
+   ========================= */
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.pagination-info {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.pagination button[disabled] {
+  opacity: 0.5;
+  cursor: default;
+  box-shadow: none;
+  transform: none;
+}
+
