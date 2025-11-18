@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestión de Jugadores de Fútbol</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div id="app-root">
+    <!-- ===========================
+         CABECERA GLOBAL
+    ============================ -->
+    <header class="app-header">
+      <div class="app-header__title">
+        <h1>⚽ Gestión de Jugadores</h1>
+        <p>Sistema profesional con Supabase</p>
+      </div>
+
+      <div class="app-header__user">
+        <!-- Aquí mostraremos info del usuario autenticado -->
+        <span id="user-email" class="user-email"></span>
+        <button id="btn-logout" class="btn btn-secondary btn-small hidden">
+          Cerrar sesión
+        </button>
+      </div>
+    </header>
+
+    <!-- ===========================
+         VISTA DE AUTENTICACIÓN
+    ============================ -->
+    <main id="auth-view" class="view">
+      <section class="auth-card">
+        <h2>Iniciar sesión</h2>
+        <p class="auth-subtitle">
+          Accede con tu cuenta para gestionar la base de datos de jugadores.
+        </p>
+
+        <div id="auth-alert" class="alert-container"></div>
+
+        <form id="login-form" class="auth-form">
+          <div class="form-group">
+            <label for="auth-email">Correo electrónico</label>
+            <input
+              type="email"
+              id="auth-email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder="tu@correo.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="auth-password">Contraseña</label>
+            <input
+              type="password"
+              id="auth-password"
+              name="password"
+              required
+              autocomplete="current-password"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div class="auth-actions">
+            <button type="submit" class="btn btn-primary" id="btn-login">
+              Iniciar sesión
+            </button>
+          </div>
+        </form>
+
+        <div class="auth-extra">
+          <p>¿No tienes cuenta?</p>
+          <button
+            type="button"
+            id="btn-show-signup"
+            class="btn btn-secondary btn-small"
+          >
+            Crear cuenta nueva
+          </button>
+        </div>
+
+        <!-- Formulario de registro (se muestra/oculta con JS) -->
+        <form id="signup-form" class="auth-form hidden">
+          <h3>Crear cuenta</h3>
+
+          <div class="form-group">
+            <label for="signup-email">Correo electrónico</label>
+            <input
+              type="email"
+              id="signup-email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder="tu@correo.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="signup-password">Contraseña</label>
+            <input
+              type="password"
+              id="signup-password"
+              name="password"
+              required
+              autocomplete="new-password"
+              placeholder="Mínimo 6 caracteres"
+            />
+          </div>
+
+          <div class="auth-actions">
+            <button type="submit" class="btn btn-primary" id="btn-signup">
+              Registrarse
+            </button>
+            <button type="button" class="btn btn-secondary btn-small" id="btn-cancel-signup">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- ===========================
+         VISTA PRINCIPAL DE LA APP
+         (solo visible si hay sesión)
+    ============================ -->
+    <main id="app-view" class="view hidden">
+      <div id="config-banner" class="config-banner hidden">
+        ⚠️ Configura la conexión a Supabase para empezar
+      </div>
+
+      <!-- TABS PRINCIPALES -->
+      <nav class="tabs">
+        <button class="tab active" onclick="showTab('config')">⚙️ Configuración</button>
+        <button class="tab" onclick="showTab('list')">📋 Jugadores</button>
+        <button class="tab" onclick="showTab('add')">➕ Añadir</button>
+        <button class="tab" onclick="showTab('stats')">📊 Estadísticas</button>
+      </nav>
+
+      <!-- ========== TAB: CONFIGURACIÓN ========== -->
+      <section id="tab-config" class="tab-content active">
+        <div class="config-card">
+          <h2>🔐 Configuración de Supabase</h2>
+          <p class="config-description">
+            La URL del proyecto y la clave pública (anon) se gestionarán desde la
+            configuración interna de la aplicación.
+          </p>
+
+          <div id="config-alert" class="alert-container"></div>
+
+          <div class="info-box">
+            <h3>Información de conexión</h3>
+            <ul>
+              <li>La aplicación usa Supabase como backend de datos.</li>
+              <li>La clave pública (anon) se carga desde la configuración interna.</li>
+              <li>
+                El acceso a los datos se controla con autenticación y políticas de
+                seguridad (RLS) en Supabase.
+              </li>
+            </ul>
+          </div>
+
+          <div class="config-actions">
+            <button id="btn-test-connection" class="btn btn-primary">
+              🔌 Probar conexión con Supabase
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== TAB: LISTA DE JUGADORES ========== -->
+      <section id="tab-list" class="tab-content">
+        <div class="search-box">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="🔍 Buscar por nombre, equipo, nacionalidad..."
+          />
+          <button class="btn btn-primary" id="btn-reload-players">
+            🔄 Recargar
+          </button>
+        </div>
+
+        <div id="playersTableContainer"></div>
+      </section>
+
+      <!-- ========== TAB: AÑADIR / EDITAR JUGADOR ========== -->
+      <section id="tab-add" class="tab-content">
+        <h2 id="formTitle">➕ Añadir Nuevo Jugador</h2>
+        <div id="alertContainer" class="alert-container"></div>
+
+        <form id="playerForm">
+          <input type="hidden" id="idJugadorBS" />
+
+          <!-- Identificación -->
+          <section class="form-section">
+            <h3>Identificación</h3>
+            <div class="form-grid form-grid-3">
+              <div class="form-group">
+                <label for="idJugador">ID Jugador (numérico)</label>
+                <input
+                  type="number"
+                  id="idJugador"
+                  placeholder="ID único del jugador"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="idWS">ID Web Scraping</label>
+                <input
+                  type="text"
+                  id="idWS"
+                  placeholder="ID de referencia web"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="idEquipo">ID Equipo (numérico)</label>
+                <input
+                  type="number"
+                  id="idEquipo"
+                  placeholder="Identificador del equipo"
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- Datos personales -->
+          <section class="form-section">
+            <h3>Datos Personales</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="Jugador">Nombre del Jugador *</label>
+                <input
+                  type="text"
+                  id="Jugador"
+                  required
+                  placeholder="Ej: Cristiano Ronaldo"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="FechaNacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="FechaNacimiento" />
+              </div>
+
+              <div class="form-group">
+                <label for="Nacionalidad">Nacionalidad</label>
+                <input
+                  type="text"
+                  id="Nacionalidad"
+                  placeholder="Ej: España, Argentina..."
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- Características físicas -->
+          <section class="form-section">
+            <h3>Características Físicas</h3>
+            <div class="form-grid form-grid-3">
+              <div class="form-group">
+                <label for="Peso">Peso (kg)</label>
+                <input
+                  type="number"
+                  id="Peso"
+                  min="40"
+                  max="150"
+                  placeholder="75"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="Estatura">Estatura (cm)</label>
+                <input
+                  type="number"
+                  id="Estatura"
+                  min="150"
+                  max="220"
+                  placeholder="180"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="Pie">Pie Dominante</label>
+                <select id="Pie">
+                  <option value="">Seleccionar...</option>
+                  <option value="Derecho">Derecho</option>
+                  <option value="Izquierdo">Izquierdo</option>
+                  <option value="Ambos">Ambos</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <!-- Información deportiva -->
+          <section class="form-section">
+            <h3>Información Deportiva</h3>
+            <div class="form-grid form-grid-3">
+              <div class="form-group">
+                <label for="Posicion">Posición</label>
+                <select id="Posicion">
+                  <option value="">Seleccionar...</option>
+                  <option value="Portero">Portero</option>
+                  <option value="Defensa">Defensa</option>
+                  <option value="Lateral Derecho">Lateral Derecho</option>
+                  <option value="Lateral Izquierdo">Lateral Izquierdo</option>
+                  <option value="Pivote">Pivote</option>
+                  <option value="Centrocampista">Centrocampista</option>
+                  <option value="Mediocentro">Mediocentro</option>
+                  <option value="Mediapunta">Mediapunta</option>
+                  <option value="Extremo">Extremo</option>
+                  <option value="Delantero">Delantero</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="bsURL">URL BeSoccer</label>
+                <input type="url" id="bsURL" placeholder="https://..." />
+              </div>
+
+              <div class="form-group">
+                <label for="Seguimiento">En Seguimiento</label>
+                <div class="checkbox-group">
+                  <input type="checkbox" id="Seguimiento" />
+                  <span>Marcar para seguimiento activo</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Procesamiento -->
+          <section class="form-section">
+            <h3>Procesamiento</h3>
+            <div class="form-grid form-grid-3">
+              <div class="form-group">
+                <label for="Procesar">Procesar</label>
+                <div class="checkbox-group">
+                  <input type="checkbox" id="Procesar" />
+                  <span>Marcar para procesar</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="ProcesarBin">Procesamiento Binario</label>
+                <input
+                  type="text"
+                  id="ProcesarBin"
+                  placeholder="0 o 1"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="FechaProcesado">Fecha Procesado</label>
+                <input
+                  type="datetime-local"
+                  id="FechaProcesado"
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- Botones formulario -->
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="btn-save-player">
+              💾 Guardar Jugador
+            </button>
+            <button type="button" class="btn btn-secondary" id="btn-reset-form">
+              🔄 Limpiar Formulario
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ========== TAB: ESTADÍSTICAS ========== -->
+      <section id="tab-stats" class="tab-content">
+        <div id="statsCards" class="stats-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===========================
+       SCRIPTS
+       =========================== -->
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Punto de entrada ES module -->
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

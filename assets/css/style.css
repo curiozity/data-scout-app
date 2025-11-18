@@ -1,0 +1,522 @@
+/* =========================
+   RESET BÁSICO
+   ========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================
+   BASE
+   ========================= */
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0b1020;
+  color: #e5e7eb;
+  padding: 24px;
+}
+
+/* Ocultar cosas reutilizable */
+.hidden {
+  display: none !important;
+}
+
+/* Contenedor raíz */
+#app-root {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: radial-gradient(circle at top left, #1e293b, #020617);
+  border-radius: 20px;
+  padding: 24px 28px 32px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.7),
+    0 0 40px rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+/* =========================
+   CABECERA
+   ========================= */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.app-header__title h1 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.app-header__title p {
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.app-header__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-email {
+  font-size: 0.9rem;
+  color: #a5b4fc;
+}
+
+/* =========================
+   BOTONES
+   ========================= */
+.btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: white;
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.45);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(59, 130, 246, 0.6);
+}
+
+.btn-secondary {
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+.btn-secondary:hover {
+  background: rgba(30, 41, 59, 0.95);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: white;
+}
+
+.btn-danger:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5);
+}
+
+.btn-small {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+}
+
+/* =========================
+   VISTAS (AUTH / APP)
+   ========================= */
+.view {
+  margin-top: 10px;
+}
+
+/* =========================
+   AUTH
+   ========================= */
+.auth-card {
+  background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.94));
+  border-radius: 18px;
+  padding: 22px 22px 24px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.8);
+  max-width: 480px;
+}
+
+.auth-card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 4px;
+}
+
+.auth-subtitle {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  margin-bottom: 14px;
+}
+
+.auth-form {
+  margin-top: 10px;
+}
+
+.auth-form h3 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.auth-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.auth-extra {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* =========================
+   FORMULARIOS GENERALES
+   ========================= */
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 4px;
+  color: #9ca3af;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="url"],
+select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+input::placeholder {
+  color: #6b7280;
+}
+
+select {
+  cursor: pointer;
+}
+
+input:focus,
+select:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.8);
+  background: rgba(15, 23, 42, 0.98);
+}
+
+/* Layout de secciones de formulario */
+.form-section {
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.4);
+}
+
+.form-section h3 {
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+/* Grids */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px 16px;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px 16px;
+}
+
+/* Grupo checkbox */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+}
+
+/* Acciones del formulario principal */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* =========================
+   BANNERS / ALERTAS
+   ========================= */
+.config-banner {
+  margin: 8px 0 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  color: #fff7ed;
+  font-size: 0.88rem;
+}
+
+.alert-container {
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.alert {
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.6);
+  color: #6ee7b7;
+}
+
+.alert-error {
+  background: rgba(248, 113, 113, 0.15);
+  border-color: rgba(248, 113, 113, 0.9);
+  color: #fecaca;
+}
+
+/* =========================
+   TABS PRINCIPALES
+   ========================= */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin: 10px 0 16px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  cursor: pointer;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tab.active {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: #f9fafb;
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.7);
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* =========================
+   CONFIGURACIÓN
+   ========================= */
+.config-card {
+  background: rgba(15, 23, 42, 0.96);
+  border-radius: 16px;
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+.config-card h2 {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.config-description {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+.config-actions {
+  margin-top: 12px;
+}
+
+/* Info box */
+.info-box {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(30, 64, 175, 0.3);
+  border: 1px solid rgba(96, 165, 250, 0.6);
+}
+
+.info-box h3 {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.info-box ul {
+  margin-left: 16px;
+  font-size: 0.85rem;
+  color: #cbd5f5;
+}
+
+.info-box li {
+  margin-bottom: 2px;
+}
+
+/* =========================
+   BUSCADOR / LISTA
+   ========================= */
+.search-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.search-box input {
+  flex: 1 1 240px;
+}
+
+/* Tabla de jugadores */
+.table-wrapper {
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+thead {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: #f9fafb;
+}
+
+th, td {
+  padding: 8px 10px;
+  text-align: left;
+}
+
+tbody tr:nth-child(even) {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+tbody tr:nth-child(odd) {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+tbody tr:hover {
+  background: rgba(30, 64, 175, 0.7);
+}
+
+/* =========================
+   ESTADOS / LOADING
+   ========================= */
+.empty-state {
+  padding: 26px 18px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.empty-state h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.loading {
+  padding: 22px 18px;
+  text-align: center;
+  color: #9ca3af;
+}
+
+/* =========================
+   ESTADÍSTICAS
+   ========================= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.stat-card {
+  border-radius: 14px;
+  padding: 12px 10px;
+  background: radial-gradient(circle at top left, #1d4ed8, #020617);
+  color: #e5e7eb;
+  box-shadow: 0 10px 24px rgba(30, 64, 175, 0.7);
+}
+
+.stat-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 3px;
+  font-weight: 700;
+}
+
+.stat-card p {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #c7d2fe;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width: 768px) {
+  #app-root {
+    padding: 16px 14px 24px;
+  }
+
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app-header__user {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+}
