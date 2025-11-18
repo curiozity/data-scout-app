@@ -1,3 +1,4 @@
+// assets/js/main.js
 import { detectSession } from "./auth.js";
 import { loadPlayers } from "./players-ui.js";
 import { loadStats } from "./stats-ui.js";
@@ -19,15 +20,22 @@ window.showTab = function (tabName) {
     .querySelectorAll(".tab-content")
     .forEach((c) => c.classList.remove("active"));
 
-  // Marcar el botón que se ha pulsado
+  // Marcar el botón que se ha pulsado (si existe event/currentTarget)
   if (window.event && window.event.currentTarget) {
     window.event.currentTarget.classList.add("active");
   }
 
-  // El contenido tiene id="tab-config", "tab-list", etc.
+  // Los contenidos tienen id="tab-config", "tab-list", "tab-add", "tab-stats"
   const contentId = `tab-${tabName}`;
   const contentEl = document.getElementById(contentId);
-  if (!contentEl) return; // seguridad
+
+  if (!contentEl) {
+    console.error("No se encontró el contenido de pestaña", {
+      tabName,
+      contentId,
+    });
+    return;
+  }
 
   contentEl.classList.add("active");
 
