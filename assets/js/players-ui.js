@@ -1,4 +1,4 @@
-import { $, html, emptyState } from "./dom.js";
+import { html, emptyState } from "./dom.js";
 import { getPlayers, deletePlayer, getPlayerById } from "./players-service.js";
 import { fillFormForEdit } from "./form.js";
 
@@ -36,7 +36,6 @@ export async function loadPlayers(page = 1) {
     }
 
     renderPlayersTable(allPlayers);
-    renderPagination();
 
   } catch (err) {
     html(
@@ -47,7 +46,7 @@ export async function loadPlayers(page = 1) {
 }
 
 // ------------------------------------------------------
-// Renderizar tabla HTML
+// Renderizar tabla HTML (incluye paginación debajo)
 // ------------------------------------------------------
 function renderPlayersTable(players) {
   let rows = "";
